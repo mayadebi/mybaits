@@ -27,8 +27,8 @@
             </dataSource>
         </environment>
     </environments>
+    <!-- 扫包 -->
     <mappers>
-        <mapper resource="com/fzy/dao/SysUserMapper.xml"/>
+        <package name="com.fzy"/>
     </mappers>
-
 </configuration>
