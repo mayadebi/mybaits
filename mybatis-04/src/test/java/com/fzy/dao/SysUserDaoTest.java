@@ -7,19 +7,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class SysUserDaoTest {
     @Test
     public void test() {
         SqlSession sqlsession = MybatisUtils.getSqlsession();
         SysUserMapper mapper = sqlsession.getMapper(SysUserMapper.class);
-        selectById(mapper);
+        selectByLimit(mapper);
         // 关闭
         sqlsession.close();
     }
     @Test
     public void testLog4j(){
-        Logger logger = LogManager.getLogger("Log");
+        Logger logger = LogManager.getLogger(SysUser.class);
         logger.info("info");
         logger.debug("debug");
         logger.warn("warn");
@@ -31,6 +35,16 @@ public class SysUserDaoTest {
         SysUser userById = mapper.getUserById(1);
         System.out.println(userById.toString());
     }
+    // 分页查询
+    public void selectByLimit(SysUserMapper mapper) {
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("limit",0);
+        map.put("size",5);
+        List<SysUser> userByLimit = mapper.getUserByLimit(map);
+        for (SysUser sysUser : userByLimit) {
+            System.out.println(sysUser.toString());
+        }
 
+    }
 
 }

@@ -9,7 +9,9 @@
     <select id="getUserById"  parameterType="int" resultMap="sysUser">
         select * from sys_user where pkid = #{id}
     </select>
-
+    <select id="getUserByLimit"  parameterType="map" resultMap="sysUser">
+        select * from sys_user limit #{limit},#{size}
+    </select>
 
 
 </mapper>
