@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="db.properties"/>
+    <!-- 扫包给实体类默认限定名  每一个在包 domain.blog 中的 Java Bean，在没有注解的情况下，
+    会使用 Bean 的首字母小写的非限定类名来作为它的别名。
+    比如 domain.blog.Author 的别名为 author；若有注解，则别名为其注解值  -->
+    <typeAliases>
+        <package name="com.fzy"/>
+    </typeAliases>
+    <!-- 数据库连接配置  -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!-- 扫包加载 mapper.xml  -->
+    <mappers>
+        <!--方式一 使用相对路径 -->
+<!--        <mapper resource="com/fzy/dao/SysUserMapper.xml"/>-->
+        <!--方式二 使用class文件绑定注册   接口和mapper配置文件必须同名   接口和mapper配置文件必须在同包 -->
+<!--        <mapper class="com.fzy.dao.SysUserMapper"/>-->
+        <!--方式三 扫包加载  接口和mapper配置文件必须同名   接口和mapper配置文件必须在同包  -->
+        <package name="com.fzy"/>
+    </mappers>
+</configuration>
