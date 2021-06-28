@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fzy.dao.StudentMapper">
+    <!--        复杂查询-->
+    <!--        对象  association-->
+    <!--        集合 collection-->
+<!--    方式2-->
+<!--    使用连表查询sql-->
+<!--    使用association配置-->
+    <select id="getStudentAll2" resultMap="getStudentAndTeacher2">
+        select a.pkid as id,a.name as sname,t.name as tname from student a left join teacher t on a.tid = t.pkid
+    </select>
+    <resultMap id="getStudentAndTeacher2" type="student">
+        <result property="pkid" column="id"/>
+        <result property="name" column="sname"/>
+        <association property="teacher" javaType="teacher">
+            <result property="name" column="tname"/>
+        </association>
+    </resultMap>
+<!--    方式1  -->
+<!--    查询所有学生，-->
+<!--    根据查询出来的学生查询老师-->
+    <resultMap id="studentAndTeacher" type="student">
+
+        <association property="teacher" column="tid"  javaType="teacher" select="getTeacherById"/>
+
+    </resultMap>
+    <select id="getStudentAll" resultMap="studentAndTeacher">
+        select * from student
+    </select>
+<!--    这里的id随便起什么名字都可以-->
+    <select id="getTeacherById" resultType="teacher">
+        select * from teacher where pkid = #{id}
+    </select>
+</mapper>
