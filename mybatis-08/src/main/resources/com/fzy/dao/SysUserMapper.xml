@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fzy.dao.SysUserMapper">
+<!--    可以使用sql片段提取多个重复sql
+         只使用单表查询
+         不要有where标签
+-->
+    <sql id="if">
+        <if test="name != null">
+            name = #{name}
+        </if>
+        <if test="password != null">
+            and password = #{password}
+        </if>
+    </sql>
+
+    <select id="getSysUserAll" resultType="sysUser" parameterType="map">
+        select * from sys_user
+        <where>
+            <include refid="if"></include>
+        </where>
+    </select>
+<!--    多个条件选择一个-->
+    <select id="getSysUserAll2" resultType="sysUser" parameterType="map">
+        select * from sys_user
+        <where>
+            <choose>
+                <when test="name != null">
+                    AND name like #{name}
+                </when>
+                <when test="password != null">
+                    AND password like #{password}
+                </when>
+                <otherwise>
+                    AND pkid = 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+<!--    修改使用ser可以去掉后面的逗号-->
+    <update id="uptSysUser" parameterType="map">
+        update sys_user
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="password != null">password=#{password},</if>
+        </set>
+        where pkid = #{pkid}
+    </update>
+
+    <select id="getSysUserAll3" resultType="sysUser">
+        SELECT *
+        FROM sys_user
+        <where>
+            <if test="ids != null">
+                pkid in
+                <foreach item="id"  collection="ids"
+                         open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+
+        </where>
+
+    </select>
+</mapper>
