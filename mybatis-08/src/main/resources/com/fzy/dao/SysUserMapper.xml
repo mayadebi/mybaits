@@ -3,6 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fzy.dao.SysUserMapper">
+<!--    缓存是查询多次一样数据用的
+详细在https://mybatis.org/mybatis-3/zh/sqlmap-xml.html#cache
+-->
+    <cache
+    eviction="LRU"
+    flushInterval="60000"
+    size="512"
+    readOnly="true"/>
 <!--    可以使用sql片段提取多个重复sql
          只使用单表查询
          不要有where标签
